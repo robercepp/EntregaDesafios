@@ -1,124 +1,147 @@
-// Simulador de ecommerce para el sitio de Anabella Avena - Ilustradora Freelance.
+// Simulador eCommerce para Anabella Avena - Ilustradora Freelance
 
-//Libretas en venta y sus precios
-const LIBRETADECHICASGAMER = "Libreta de Chicas Gamer, ";
-const LIBCHICAGAMERPRECIO = 12.5;
+let cantidadProductos = 0;
+let listaDeCompras = "";
+let precioSinIva = 0;
+const iva = 1.21;
 
-const LIBRETASIXFANARTS = "Libreta de Six Fanarts, ";
-const LIBSIXFANARTSPRECIO = 10.5;
+//Constructor de Productos
+class Producto {
+    constructor(nombre, precio, stockDisponible) {
+        this.nombre = nombre;
+        this.precio = parseFloat(precio);
+        this.stockDisponible = parseInt(stockDisponible);
+        this.stock = stockDisponible;
+    }
+    añadir(cantidad) {
+        cantidad = parseInt(cantidad);
+        let subtotal = cantidad * this.precio;
+        cantidadProductos = cantidadProductos + cantidad;
+        precioSinIva = precioSinIva + subtotal;
+        listaDeCompras = listaDeCompras + (cantidad + "x " + this.nombre + ", ");
+        if (this.stock >= cantidad) {
+            this.stock = this.stock - cantidad;
+            if (cantidad == 1) {
+                return alert(this.nombre + " ha sido añadido al carrito.");
+            } else {
+                if (cantidad > 1) {
+                    return alert(cantidad + "x " + this.nombre + " han sido añadidos al carrito.");
+                }
+            }
+        } else {
+            return alert("Atención:\nNo hay suficiente stock para cubrir la demanda.\nPor el momento solo puede solicitar " + this.stock + " o menos.");
+        }
 
-const LIBRETALULUMARTINS = "Libreta de Lulu Martins, ";
-const LIBLULUMARTINSPRECIO = 11;
+    }
+}
 
-const LIBRETACHRISTINEHUG = "Libreta de Christine Hug, ";
-const LIBCHRISTINEHUGPRECIO = 12;
+//Catálogo de productos
+//Libretas
+const libretaChicasGamer = new Producto("Libreta de Chicas Gamer", 12.5, 10);
+const libretaSixFanarts = new Producto("Libreta de Six Fanarts", 10.5, 15);
+const libretaLuluMartins = new Producto("Libreta de Lulu Martins", 11.0, 6);
+const libretaChristineHug = new Producto("Libreta de Christine Hug", 12.0, 8);
 
-//Stickers en venta y sus precios
-const STICKERSDESIRENAS = "Stickers de Sirenas, ";
-const STISIRENAPRECIO = 3.50;
 
-const STICKERSDECHICAS = "Stickers de Chicas, ";
-const STICHICASPRECIO = 3.0;
+//Stickers
+const stickerSirenas = new Producto("Stickers de Sirenas", 3.50, 6);
+const stickerChicas = new Producto("Stickers de Chicas", 3.0, 7);
+const stickerHalloween = new Producto("Stickers de Halloween", 2.75, 10);
+const stickerAnimales = new Producto("Stickers de Animales", 3.5, 10);
 
-const STICKERSDEHALLOWEEN = "Stickers de Halloween, ";
-const STIHALLOWEENPRECIO = 2.75;
+//Posters
+const posterNocheVerano = new Producto("Poster de una Noche de Verano", 5.75, 6);
+const posterAmantesMariposa = new Producto("Poster de Amantes Mariposa", 6.0, 8);
+const posterDeSanValentin = new Producto("Poster de San Valentín espacial", 5.0, 10);
+const posterDeGatos = new Producto("Poster de Gatos", 5.50, 7);
 
-const STICKERSDEANIMALES = "Stickers de Animales, ";
-const STIANIMALESPRECIO = 3.5;
+//A partir de aquí comienza el menú...
 
-//Posters en venta y sus precios
-const POSTERNOCHEVERANO = "Poster de Una Noche de Verano, ";
-const POSTNOCHEVERANOPRECIO = 5.75;
+MENUPRINCIPAL();
 
-const POSTERAMANTESMARIPOSA = "Poster de Amantes Mariposa, ";
-const POSTAMANTESPRECIO = 6.0;
-
-const POSTERSANVALENTIN = "Poster de San Valentín Espacial, ";
-const POSTSANVALPRECIO = 5.0;
-
-const POSTERDEGATOS = "Poster de Gatos, ";
-const POSTGATOSPRECIO = 5.50;
-
-//Variables Generales
-let precio = 0;
-let precioParseado;
-let sumaPrecio = 0;
-let listaCompra = "";
-let cantidadItems = 0;
-const IVA = 1.21;
-let precioMasIva = 0;
-
-function MenuTienda() {
-    let menuOpcion = prompt("--- Simulador eCommerce --- \n--- Anabella Avena - Ilustradora Freelance ---\nBienvenido/a al simulador de tienda, aquí podrás ver mi catálogo de items en venta.\nPor favor elige una opción:\n1- Libretas\n2-Stickers\n3-Posters\n4-Ir al carrito de compras\n5-Salir ");
-    let menuOpcionParseado = parseInt(menuOpcion);
-    console.log(menuOpcionParseado);
-    if (menuOpcionParseado >= 1 && menuOpcionParseado <= 6) {
-        switch (menuOpcionParseado) {
+function MENUPRINCIPAL() {
+    let menuOpcion = prompt("--- Simulador eCommerce --- \n--- Anabella Avena - Ilustradora Freelance ---\nBienvenido/a al simulador de tienda, aquí podrás ver mi catálogo de items en venta.\nPor favor elige una opción:\n1-Libretas\n2-Stickers\n3-Posters\n4-Ir al carrito de compras\n5-Salir ");
+    menuOpcion = parseInt(menuOpcion);
+    if (menuOpcion >= 1 && menuOpcion <= 5) {
+        switch (menuOpcion) {
             case 1:
                 alert("Ha entrado en el menú libretas...");
-                MenuLibretas();
+                MENULIBRETAS();
                 break;
             case 2:
                 alert("Ha entrado en el menú Stikers");
-                MenuStickers();
+                MENUSTICKERS();
                 break;
             case 3:
                 alert("Ha entrado en el menú Posters");
-                MenuPosters();
+                MENUPOSTERS();
                 break;
             case 4:
                 alert("Accediendo al Carrito de Compras");
-                MenuCarrito();
+                MENUCARRITO();
                 break;
             case 5:
-                ExitProgram();
+                EXITPROGRAM();
                 break;
         }
     } else {
         alert("Por favor elija una opción del 1 al 5 \n \n volvamos a intentarlo.");
-        MenuTienda();
+        MENUPRINCIPAL();
     }
 }
 
-MenuTienda();
-
-function MenuLibretas() {
-
-    let menuLibretas = prompt("---Anabella Avena - Ilustradora Freelance---\n---Menú de libretas---\nPor favor elija una opción para agregar al carrito:\n1-Libreta de Chicas Gamer - Precio: $12.50-\n2-Libreta Six Fanarts - Precio: $10.50-\n3-Libreta Lulu Martins - Precio: $11.0-\n4-Libreta Christine Hug - Precio: $12.0-\n5-Volver al menú anterior.\n \nNota: Los precios no incluyen i.v.a.");
-    let menuLibretasParseado = parseInt(menuLibretas);
-    if (menuLibretasParseado == 1) {
-        alert("El item ha sido añadido al carrito de compras...");
-        sumaPrecio = sumaPrecio + LIBCHICAGAMERPRECIO;
-        cantidadItems = cantidadItems + 1;
-        listaCompra = listaCompra + LIBRETADECHICASGAMER;
-        MenuLibretas();
-    } else {
-        if (menuLibretasParseado == 2) {
-            alert("El item ha sido añadido al carrito de compras...");
-            sumaPrecio = sumaPrecio + LIBSIXFANARTSPRECIO;
-            cantidadItems = cantidadItems + 1;
-            listaCompra = listaCompra + LIBRETASIXFANARTS;
-            MenuLibretas();
+function MENULIBRETAS() {
+    let menuOpcion = prompt("---Anabella Avena - Ilustradora Freelance---\n---Menú de libretas---\nPor favor elija una opción para agregar al carrito:\n1-Libreta de Chicas Gamer - Precio: $12.50- - Unidades disponibles: " + libretaChicasGamer.stock + "\n2-Libreta Six Fanarts - Precio: $10.50- - Unidades disponibles: " + libretaSixFanarts.stock + "\n3-Libreta Lulu Martins - Precio: $11.0- - Unidades disponibles: " + libretaLuluMartins.stock + "\n4-Libreta Christine Hug - Precio: $12.0- - Unidades disponibles: " + libretaChristineHug.stock + "\n5-Volver al menú anterior.\n \nNota: Los precios no incluyen i.v.a.");
+    menuOpcion = parseInt(menuOpcion);
+    if (menuOpcion == 1) {
+        let cantidad = prompt("Cuanto/as " + libretaChicasGamer.nombre + " deseas añadir al carrito?\nStock disponible: " + libretaChicasGamer.stock);
+        cantidad = parseInt(cantidad);
+        if (cantidad >= 1 && libretaChicasGamer.stock >= cantidad) {
+            libretaChicasGamer.añadir(cantidad);
         } else {
-            if (menuLibretasParseado == 3) {
-                alert("El item ha sido añadido al carrito de compras...");
-                sumaPrecio = sumaPrecio + LIBLULUMARTINSPRECIO;
-                cantidadItems = cantidadItems + 1;
-                listaCompra = listaCompra + LIBRETALULUMARTINS;
-                MenuLibretas();
+            alert("Operación inválida, debes ingresar números enteros mayor a 1 y que se encuentren dentro del stock disponible.");
+            MENULIBRETAS();
+        }
+        MENULIBRETAS();
+    } else {
+        if (menuOpcion == 2) {
+            let cantidad = prompt("Cuanto/as " + libretaSixFanarts.nombre + " deseas añadir al carrito?\nStock disponible: " + libretaSixFanarts.stock);
+            cantidad = parseInt(cantidad);
+            if (cantidad >= 1 & libretaSixFanarts.stock >= cantidad) {
+                libretaSixFanarts.añadir(cantidad);
             } else {
-                if (menuLibretasParseado == 4) {
-                    alert("El item ha sido añadido al carrito de compras...");
-                    sumaPrecio = sumaPrecio + LIBCHRISTINEHUGPRECIO;
-                    cantidadItems = cantidadItems + 1;
-                    listaCompra = listaCompra + LIBRETACHRISTINEHUG;
-                    MenuLibretas();
+                alert("Operación inválida, debes ingresar números enteros mayor a 1 y que se encuentren dentro del stock disponible.");
+                MENULIBRETAS();
+            }
+            MENULIBRETAS();
+        } else {
+            if (menuOpcion == 3) {
+                let cantidad = prompt("Cuanto/as " + libretaLuluMartins.nombre + " deseas añadir al carrito?\nStock disponible: " + libretaLuluMartins.stock);
+                cantidad = parseInt(cantidad);
+                if (cantidad >= 1 & libretaLuluMartins.stock >= cantidad) {
+                    libretaLuluMartins.añadir(cantidad);
                 } else {
-                    if (menuLibretasParseado == 5) {
-                        VolverAlMenu();
+                    alert("Operación inválida, debes ingresar números enteros mayor a 1 y que se encuentren dentro del stock disponible.");
+                    MENULIBRETAS();
+                }
+                MENULIBRETAS();
+            } else {
+                if (menuOpcion == 4) {
+                    let cantidad = prompt("Cuanto/as " + libretaChristineHug.nombre + " deseas añadir al carrito?\nStock disponible: " + libretaChristineHug.stock);
+                    cantidad = parseInt(cantidad);
+                    if (cantidad >= 1 & libretaChristineHug.stock >= cantidad) {
+                        libretaChristineHug.añadir(cantidad);
+                    } else {
+                        alert("Operación inválida, debes ingresar números enteros mayor a 1 y que se encuentren dentro del stock disponible.");
+                        MENULIBRETAS();
+                    }
+                    MENULIBRETAS();
+                } else {
+                    if (menuOpcion == 5) {
+                        VOLVERALMENU();
                     } else {
                         alert("Por favor ingrese un número del 1 al 5");
-                        MenuLibretas();
+                        MENULIBRETAS();
                     }
                 }
             }
@@ -126,42 +149,58 @@ function MenuLibretas() {
     }
 }
 
-function MenuStickers() {
-    let menuStickers = prompt("---Anabella Avena - Ilustradora Freelance---\n---Menú de Stickers---\nPor favor elija una opción para agregar al carrito:\n1-Stickers de Sirenas - Precio: $3.50-\n2-Stickers de Chicas - Precio: $3.0-\n3-Stickers de Halloween - Precio: $2.75-\n4-Stickers de Animales - Precio: $3.5-\n5-Volver al menú anterior.\n \nNota: Los precios no incluyen i.v.a.")
-    let menuStickersParseado = parseInt(menuStickers);
-    if (menuStickersParseado == 1) {
-        alert("El item ha sido añadido al carrito de compras...");
-        sumaPrecio = sumaPrecio + STISIRENAPRECIO;
-        cantidadItems = cantidadItems + 1;
-        listaCompra = listaCompra + STICKERSDESIRENAS;
-        MenuStickers();
-    } else {
-        if (menuStickersParseado == 2) {
-            alert("El item ha sido añadido al carrito de compras...");
-            sumaPrecio = sumaPrecio + STICHICASPRECIO;
-            cantidadItems = cantidadItems + 1;
-            listaCompra = listaCompra + STICKERSDECHICAS;
-            MenuStickers();
+function MENUSTICKERS() {
+    let menuOpcion = prompt("---Anabella Avena - Ilustradora Freelance---\n---Menú de Stickers---\nPor favor elija una opción para agregar al carrito:\n1-Stickers de Sirenas - Precio: $3.50- - Unidades disponibles: " + stickerSirenas.stock + "\n2-Stickers de Chicas - Precio: $3.0- - Unidades disponibles: " + stickerChicas.stock + "\n3-Stickers de Halloween - Precio: $2.75- - Unidades disponibles: " + stickerHalloween.stock + "\n4-Stickers de Animales - Precio: $3.5- - Unidades disponibles: " + stickerAnimales.stock + "\n5-Volver al menú anterior.\n \nNota: Los precios no incluyen i.v.a.");
+    menuOpcion = parseInt(menuOpcion);
+    if (menuOpcion == 1) {
+        let cantidad = prompt("Cuanto/as " + stickerSirenas.nombre + " deseas añadir al carrito?\nStock disponible: " + stickerSirenas.stock);
+        cantidad = parseInt(cantidad);
+        if (cantidad >= 1 && stickerSirenas.stock >= cantidad) {
+            stickerSirenas.añadir(cantidad);
         } else {
-            if (menuStickersParseado == 3) {
-                alert("El item ha sido añadido al carrito de compras...");
-                sumaPrecio = sumaPrecio + STIHALLOWEENPRECIO;
-                cantidadItems = cantidadItems + 1;
-                listaCompra = listaCompra + STICKERSDEHALLOWEEN;
-                MenuStickers();
+            alert("Operación inválida, debes ingresar números enteros mayor a 1 y que se encuentren dentro del stock disponible.");
+            MENUSTICKERS();
+        }
+        MENUSTICKERS();
+    } else {
+        if (menuOpcion == 2) {
+            let cantidad = prompt("Cuanto/as " + stickerChicas.nombre + " deseas añadir al carrito?\nStock disponible: " + stickerChicas.stock);
+            cantidad = parseInt(cantidad);
+            if (cantidad >= 1 & stickerChicas.stock >= cantidad) {
+                stickerChicas.añadir(cantidad);
             } else {
-                if (menuStickersParseado == 4) {
-                    alert("El item ha sido añadido al carrito de compras...");
-                    sumaPrecio = sumaPrecio + STIANIMALESPRECIO;
-                    cantidadItems = cantidadItems + 1;
-                    listaCompra = listaCompra + STICKERSDEANIMALES;
-                    MenuStickers();
+                alert("Operación inválida, debes ingresar números enteros mayor a 1 y que se encuentren dentro del stock disponible.");
+                MENUSTICKERS();
+            }
+            MENUSTICKERS();
+        } else {
+            if (menuOpcion == 3) {
+                let cantidad = prompt("Cuanto/as " + stickerHalloween.nombre + " deseas añadir al carrito?\nStock disponible: " + stickerHalloween.stock);
+                cantidad = parseInt(cantidad);
+                if (cantidad >= 1 & stickerHalloween.stock >= cantidad) {
+                    stickerHalloween.añadir(cantidad);
                 } else {
-                    if (menuStickersParseado == 5) {
-                        VolverAlMenu();
+                    alert("Operación inválida, debes ingresar números enteros mayor a 1 y que se encuentren dentro del stock disponible.");
+                    MENUSTICKERS();
+                }
+                MENUSTICKERS();
+            } else {
+                if (menuOpcion == 4) {
+                    let cantidad = prompt("Cuanto/as " + stickerAnimales.nombre + " deseas añadir al carrito?\nStock disponible: " + stickerAnimales.stock);
+                    cantidad = parseInt(cantidad);
+                    if (cantidad >= 1 & stickerAnimales.stock >= cantidad) {
+                        stickerAnimales.añadir(cantidad);
+                    } else {
+                        alert("Operación inválida, debes ingresar números enteros mayor a 1 y que se encuentren dentro del stock disponible.");
+                        MENUSTICKERS();
+                    }
+                    MENUSTICKERS();
+                } else {
+                    if (menuOpcion == 5) {
+                        VOLVERALMENU();
                     } else {
                         alert("Por favor ingrese un número del 1 al 5");
-                        MenuStickers();
+                        MENUSTICKERS();
                     }
                 }
             }
@@ -169,42 +208,58 @@ function MenuStickers() {
     }
 }
 
-function MenuPosters() {
-    let menuPosters = prompt("---Anabella Avena - Ilustradora Freelance---\n---Menú de Posters---\nPor favor elija una opción para agregar al carrito:\n1-Poster de Una Noche de Verano - Precio: $5.75-\n2-Poster de Amantes Mariposa - Precio: $6.0-\n3-Poster de San Valentin Espacial - Precio: $5.0-\n4-Poster de Gatos - Precio: $5.50-\n5-Volver al menú anterior.\n \nNota: Los precios no incluyen i.v.a.")
-    let menuPostersParseado = parseInt(menuPosters);
-    if (menuPostersParseado == 1) {
-        alert("El item ha sido añadido al carrito de compras...");
-        sumaPrecio = sumaPrecio + POSTNOCHEVERANOPRECIO;
-        cantidadItems = cantidadItems + 1;
-        listaCompra = listaCompra + POSTERNOCHEVERANO;
-        MenuPosters();
-    } else {
-        if (menuPostersParseado == 2) {
-            alert("El item ha sido añadido al carrito de compras...");
-            sumaPrecio = sumaPrecio + POSTAMANTESPRECIO;
-            cantidadItems = cantidadItems + 1;
-            listaCompra = listaCompra + POSTERAMANTESMARIPOSA;
-            MenuPosters();
+function MENUPOSTERS() {
+    let menuOpcion = prompt("---Anabella Avena - Ilustradora Freelance---\n---Menú de Posters---\nPor favor elija una opción para agregar al carrito:\n1-Poster de Una Noche de Verano - Precio: $5.75- - Unidades disponibles: " + posterNocheVerano.stock + "\n2-Poster de Amantes Mariposa - Precio: $6.0- - Unidades disponibles: " + posterAmantesMariposa.stock + "\n3-Poster de San Valentin Espacial - Precio: $5.0- - Unidades disponibles: " + posterDeSanValentin.stock + "\n4-Poster de Gatos - Precio: $5.50- - Unidades disponibles: " + posterDeGatos.stock + "\n5-Volver al menú anterior.\n \nNota: Los precios no incluyen i.v.a.");
+    menuOpcion = parseInt(menuOpcion);
+    if (menuOpcion == 1) {
+        let cantidad = prompt("Cuanto/as " + posterNocheVerano.nombre + " deseas añadir al carrito?\nStock disponible: " + posterNocheVerano.stock);
+        cantidad = parseInt(cantidad);
+        if (cantidad >= 1 && posterNocheVerano.stock >= cantidad) {
+            posterNocheVerano.añadir(cantidad);
         } else {
-            if (menuPostersParseado == 3) {
-                alert("El item ha sido añadido al carrito de compras...");
-                sumaPrecio = sumaPrecio + POSTSANVALPRECIO;
-                cantidadItems = cantidadItems + 1;
-                listaCompra = listaCompra + POSTERSANVALENTIN;
-                MenuPosters();
+            alert("Operación inválida, debes ingresar números enteros mayor a 1 y que se encuentren dentro del stock disponible.");
+            MENUPOSTERS();
+        }
+        MENUPOSTERS();
+    } else {
+        if (menuOpcion == 2) {
+            let cantidad = prompt("Cuanto/as " + posterAmantesMariposa.nombre + " deseas añadir al carrito?\nStock disponible: " + posterAmantesMariposa.stock);
+            cantidad = parseInt(cantidad);
+            if (cantidad >= 1 & posterAmantesMariposa.stock >= cantidad) {
+                posterAmantesMariposa.añadir(cantidad);
             } else {
-                if (menuPostersParseado == 4) {
-                    alert("El item ha sido añadido al carrito de compras...");
-                    sumaPrecio = sumaPrecio + POSTGATOSPRECIO;
-                    cantidadItems = cantidadItems + 1;
-                    listaCompra = listaCompra + POSTERDEGATOS;
-                    MenuPosters();
+                alert("Operación inválida, debes ingresar números enteros mayor a 1 y que se encuentren dentro del stock disponible.");
+                MENUPOSTERS();
+            }
+            MENUPOSTERS();
+        } else {
+            if (menuOpcion == 3) {
+                let cantidad = prompt("Cuanto/as " + posterDeSanValentin.nombre + " deseas añadir al carrito?\nStock disponible: " + posterDeSanValentin.stock);
+                cantidad = parseInt(cantidad);
+                if (cantidad >= 1 & posterDeSanValentin.stock >= cantidad) {
+                    posterDeSanValentin.añadir(cantidad);
                 } else {
-                    if (menuPostersParseado == 5) {
-                        VolverAlMenu();
+                    alert("Operación inválida, debes ingresar números enteros mayor a 1 y que se encuentren dentro del stock disponible.");
+                    MENUPOSTERS();
+                }
+                MENUPOSTERS();
+            } else {
+                if (menuOpcion == 4) {
+                    let cantidad = prompt("Cuanto/as " + posterDeGatos.nombre + " deseas añadir al carrito?\nStock disponible: " + posterDeGatos.stock);
+                    cantidad = parseInt(cantidad);
+                    if (cantidad >= 1 & posterDeGatos.stock >= cantidad) {
+                        posterDeGatos.añadir(cantidad);
+                    } else {
+                        alert("Operación inválida, debes ingresar números enteros mayor a 1 y que se encuentren dentro del stock disponible.");
+                        MENUPOSTERS();
+                    }
+                    MENUPOSTERS();
+                } else {
+                    if (menuOpcion == 5) {
+                        VOLVERALMENU();
                     } else {
                         alert("Por favor ingrese un número del 1 al 5");
-                        MenuPosters();
+                        MENUPOSTERS();
                     }
                 }
             }
@@ -212,64 +267,70 @@ function MenuPosters() {
     }
 }
 
-function MenuCarrito() {
+function MENUCARRITO() {
+    let pago; 
+    pago = parseFloat(pago);
+    let menuOpcion = 0;
+    let precioConIva = precioSinIva * iva;
     do {
-        let precioMasIva = sumaPrecio * IVA;
-        let menuCarrito = prompt("---Anabella Avena - Ilustradora Freelance---\n---Carrito de Compras---\nRepasemos lo que has cargado en el carrito antes de confirmar...\nLa cantidad de Items son: " + cantidadItems + "\nUn resumen de los Items que pediste: " + listaCompra + "\nEl costo total (Incluyendo IVA) es de: $" + precioMasIva + "\nElige una opción:\n1-Pagar monto\n2-Volver atrás\n3-Cancelar compra");
-        let menuCarritoParseado = parseInt(menuCarrito);
-        if (menuCarritoParseado >= 1 && menuCarritoParseado <= 3) {
-            switch (menuCarritoParseado) {
+        menuOpcion = prompt("---Anabella Avena - Ilustradora Freelance---\n---Carrito de Compras---\nRepasemos lo que has cargado en el carrito antes de confirmar...\nLa cantidad de Items son: " + cantidadProductos + "\nUn resumen de los Items que pediste: " + listaDeCompras + "\nEl costo total (Incluyendo IVA) es de: $" + (precioConIva + "-.") + "\nElige una opción:\n1-Pagar monto\n2-Volver atrás\n3-Cancelar compra");
+        menuOpcion = parseInt(menuOpcion);
+        if (menuOpcion >= 1 && menuOpcion <= 3) {
+            switch (menuOpcion) {
                 case 1:
-                    let pago = prompt("---Carrito de Compras---\nLa suma Total a pagar es de: $ " + precioMasIva + "\nPor favor ingrese el monto especificado arriba para acreditar pago...");
-                    if (pago == precioMasIva) {
-                        alert("---Carrito de Compras---\nEl pago de: $ " + precioMasIva + " se ha acreditado correctamente")
-                        CierreDeCompra();
+                    pago = prompt("---Carrito de Compras---\nLa suma Total a pagar es de: $ " + precioConIva + "\nPor favor ingrese el monto especificado arriba para acreditar pago...");
+                    if (pago == precioConIva) {
+                        alert("---Carrito de Compras---\nEl pago de: $" + precioConIva + " se ha acreditado correctamente")
+                        CIERREDECOMPRA();
                     } else {
-                        if (pago > precioMasIva) {
-                            let vuelto = pago - precioMasIva;
+                        if (pago > precioConIva) {
+                            let vuelto = pago - precioConIva;
                             alert("---Carrito de Compras---\nAl parecer nos has enviado mas dinero del que era necesario, por ello te reenviamos $" + vuelto + " como vuelto por tu compra.")
-                            CierreDeCompra();
+                            CIERREDECOMPRA();
                         } else {
-                            if (pago < precioMasIva && pago > 0) {
-                                let pagoInsuficiente = precioMasIva - pago;
-                                alert("---Carrito de Compras---\nVaya!, al parecer has pagado $" + pago + ". Lamentablemente te faltan $" + pagoInsuficiente + " para completar los $" + precioMasIva + " que se necesitan.\nTe devolvemos el dinero, Volvamos a completar la transacción.");
-                                MenuCarrito();
+                            if (pago < precioConIva && pago > 0) {
+                                let pagoInsuficiente = precioConIva - pago;
+                                alert("---Carrito de Compras---\nVaya!, al parecer has pagado $" + pago + ". Lamentablemente te faltan $" + pagoInsuficiente + " para completar los $" + precioConIva + " que se necesitan.\nTe devolvemos el dinero, Volvamos a completar la transacción.");
+                                MENUCARRITO();
                             } else {
                                 if (pago <= 0) {
                                     alert("---Carrito de Compras---\nAtención, no puedes pagar ingresando números negativos\nIntentemos nuevamente.");
-                                    MenuCarrito();
+                                    MENUCARRITO();
                                 }
                             }
                         }
                     }
                     break;
                 case 2:
-                    MenuTienda();
+                    VOLVERALMENU();
                     break;
                 case 3:
-                    ExitProgram();
+                    EXITPROGRAM();
                     break;
             }
-        }else{
+        } else {
             alert("Por favor ingrese un número del 1 al 3");
-            MenuCarrito();
+            MENUCARRITO();
         }
-    } while (pago == precioMasIva || menuCarritoParseado == 2 || menuCarritoParseado == 3) {
-        ExitProgram();
-    }
+    } while (false) 
 }
 
-function VolverAlMenu() {
+function VOLVERALMENU() {
     alert("Volviendo al menú principal...");
-    MenuTienda();
+    MENUPRINCIPAL();
 }
 
-function CierreDeCompra() {
+function CIERREDECOMPRA() {
     prompt("---Carrito de Compras---\nPor favor introduzca a continuación un correo electrónico para poder enviarte los productos.")
     alert("---Carrito de Compras---\nMuchas gracias por su compra, su envío se está procesando")
-    ExitProgram();
+    EXITPROGRAM();
 }
 
-function ExitProgram() {
-    alert("Está saliendo de la tienda, esperamos volver a verlo pronto.");
+function EXITPROGRAM() {
+  return alert("Está saliendo de la tienda, esperamos volver a verlo pronto.");
 }
+
+console.log("La cantidad de productos añadidos es de: ", cantidadProductos);
+console.log("Los productos solicitados son: ", listaDeCompras + ".");
+console.log("El precio sin iva es de: $", precioSinIva + "-.");
+console.log("El precio total es de: $", (precioSinIva * iva + "-."));
