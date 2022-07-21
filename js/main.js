@@ -1,7 +1,7 @@
 // Simulador eCommerce para Anabella Avena - Ilustradora Freelance
 
 let cantidadProductos = 0;
-let listaDeCompras = "";
+const listaDeCompras = [];
 let precioSinIva = 0;
 let nombre = "";
 let apellido = "";
@@ -25,7 +25,7 @@ class Producto {
                 if (cantidad >= 1) {
                     cantidadProductos = cantidadProductos + cantidad;
                     precioSinIva = precioSinIva + subtotal;
-                    listaDeCompras = listaDeCompras + (cantidad + "x " + this.nombre + ", ");
+                    listaDeCompras.push(cantidad + "x " + this.nombre);
                     this.stock = this.stock - cantidad;
                     if (cantidad == 1) {
                         return alert(this.nombre + " ha sido añadido al carrito.");
@@ -172,7 +172,7 @@ function MENUCARRITO() {
     pago = parseFloat(pago);
     let precioConIva = precioSinIva * iva;
     let menuOpcion = 0;
-    menuOpcion = prompt("---Anabella Avena - Ilustradora Freelance---\n---Carrito de Compras---\nRepasemos lo que has cargado en el carrito antes de confirmar...\nLa cantidad de Items son: " + cantidadProductos + "\nUn resumen de los Items que pediste: " + listaDeCompras + "\nEl costo total (Incluyendo IVA) es de: $" + (precioConIva.toFixed(2) + "-.") + "\nElige una opción:\n1-Pagar monto\n2-Volver atrás\n3-Cancelar compra");
+    menuOpcion = prompt("---Anabella Avena - Ilustradora Freelance---\n---Carrito de Compras---\nRepasemos lo que has cargado en el carrito antes de confirmar...\nLa cantidad de Items son: " + cantidadProductos + "\nUn resumen de los Items que pediste:\n" + listaDeCompras.join(".\n")+"." + "\nEl costo total (Incluyendo IVA) es de: $" + (precioConIva.toFixed(2) + "-.") + "\nElige una opción:\n1-Pagar monto\n2-Volver atrás\n3-Cancelar compra");
     menuOpcion = parseInt(menuOpcion);
     if (menuOpcion >= 1 && menuOpcion <= 3) {
         switch (menuOpcion) {
@@ -215,7 +215,7 @@ function VOLVERALMENU() {
 function CIERREDECOMPRA() {
     prompt("---Carrito de Compras---\nPor favor introduzca a continuación un correo electrónico para poder enviarte los productos.");
     alert("---Carrito de Compras---\nMuchas gracias por su compra, " + nombre + ", su envío se está procesando.");
-    alert("Su boleta de compra:\nFactura tipo C consumidor final\nAnabella Avena n°0001-000001\nNombre: " + nombre + "\nApellido: " + apellido + "\nItems comprados: " + listaDeCompras + "\nTotal monto: $" + (precioSinIva * iva.toFixed(2) + "-.\nMuchas gracias por su compra, esperamos verlo/a pronto."));
+    alert("Su boleta de compra:\nFactura tipo C consumidor final\nAnabella Avena n°0001-000001\nNombre: " + nombre + "\nApellido: " + apellido + "\nItems comprados:\n" + listaDeCompras.join(".\n") +"."+"\nTotal monto: $" + (precioSinIva * iva.toFixed(1) + "-.\nMuchas gracias por su compra, esperamos verlo/a pronto."));
     EXITPROGRAM();
 }
 
@@ -224,6 +224,6 @@ function EXITPROGRAM() {
 }
 
 console.log("La cantidad de productos añadidos es de: ", cantidadProductos);
-console.log("Los productos solicitados son: ", listaDeCompras + ".");
+console.log("Los productos solicitados son: ", listaDeCompras.join(", ") + ".");
 console.log("El precio sin iva es de: $", precioSinIva + "-.");
 console.log("El precio total es de: $", (precioSinIva * iva.toFixed(2) + "-."));
