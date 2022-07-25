@@ -71,6 +71,9 @@ catalogoDeBusqueda.push(libretaChicasGamer, libretaSixFanarts, libretaLuluMartin
 
 //A partir de aquí comienza el menú...
 
+nombre = prompt("Ingrese su nombre de pila (su apellido se lo preguntaremos luego).");
+apellido = prompt("Ingrese su apellido.");
+
 MENUPRINCIPAL();
 
 function MENUPRINCIPAL() {
