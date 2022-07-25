@@ -346,9 +346,9 @@ function CIERREDECOMPRA() {
     prompt("---Carrito de Compras---\nPor favor introduzca a continuación un correo electrónico para poder enviarte los productos.");
     alert("---Carrito de Compras---\nMuchas gracias por su compra, " + nombre + ", su envío se está procesando.");
 
-    var fechaDeCompra = new Date();
-    var dia = fechaDeCompra.toLocaleDateString();
-    var hora = fechaDeCompra.toLocaleTimeString();
+    const fechaDeCompra = new Date();
+    const dia = fechaDeCompra.toLocaleDateString();
+    const hora = fechaDeCompra.toLocaleTimeString();
 
     alert("Su boleta de compra:\nFactura tipo C consumidor final\nAnabella Avena n°0001-000001\nFecha de compra: " + dia + "\nhora: " + hora + "\nNombre: " + nombre + "\nApellido: " + apellido + "\nItems comprados:\n" + listadoCarrito + "\nTotal monto: $" + (precioConIva.toFixed(2) + "-.\nMuchas gracias por su compra!"));
     EXITPROGRAM();
