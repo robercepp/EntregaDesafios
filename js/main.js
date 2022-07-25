@@ -112,25 +112,67 @@ function MENUPRINCIPAL() {
 }
 
 function MENUBUSQUEDA() {
-    let busqueda = prompt("---Buscador de Productos---\nEscriba el tipo o el nombre del ítem que esté buscando.\nPista: puede ser un tipo como 'Sticker' o 'Poster', o alguna palabra clave ");
-    const encontrado = catalogoDeBusqueda.filter(producto => producto.tipo.includes(busqueda) || producto.nombre.includes(busqueda));
-    if (encontrado.length == 0) {
-        alert("Lo sentimos," + " '" + busqueda + "' " + "no ha arrojado ninún resultado, lo intentamos de nuevo?")
-        MENUBUSQUEDA();
+    let busqueda = prompt("---Buscador de Productos---\nEscriba el tipo o el nombre del ítem que esté buscando.\nPista: puede ser un tipo como 'Sticker' o 'Poster', o alguna palabra clave.\nEscriba '0' para volver al menú principal.");
+    if (busqueda === "0") {
+        MENUPRINCIPAL();
     } else {
-        const conteo = [];
-        let numeracion = 0;
-        const listaDeBusqueda = (funcion, encontrado) => {
-            for (const item of encontrado) {
-                numeracion = numeracion + 1;
-                funcion(item);
+        const encontrado = catalogoDeBusqueda.filter(producto => producto.tipo.toLowerCase().includes(busqueda.toLowerCase()) || producto.nombre.toLowerCase().includes(busqueda.toLowerCase()));
+        if (encontrado.length == 0) {
+            alert("Lo sentimos," + " '" + busqueda + "' " + "no ha arrojado ninún resultado, lo intentamos de nuevo?")
+            MENUBUSQUEDA();
+        } else {
+            const conteo = [];
+            let numeracion = 0;
+            const listaDeBusqueda = (funcion, encontrado) => {
+                for (const item of encontrado) {
+                    numeracion = numeracion + 1;
+                    funcion(item);
+                }
+            }
+            listaDeBusqueda((encontrado) => {
+                conteo.push(numeracion + "- Tipo: " + encontrado.tipo + ", Nombre: " + encontrado.nombre + ", Precio: $" + encontrado.precio + " Stock: " + encontrado.stock);
+            }, encontrado);
+            let menuOpcion = parseInt(prompt("Hemos encontrado:\n" + conteo.join("\n") + "\nSeleccione el ítem que desee agregar al carrito: \n0- Volver al menú de Busqueda."));
+            if (menuOpcion > 0 && menuOpcion <= conteo.length) {
+                if (catalogoDeBusqueda[encontrado[(menuOpcion - 1)].id].stock > 0) {
+                    let cantidades = parseInt(prompt("Cuantos/as " + encontrado[(menuOpcion - 1)].nombre + " desea agregar al carrito?"));
+                    if (catalogoDeBusqueda[encontrado[(menuOpcion - 1)].id].stock >= cantidades) {
+                        if (cantidades >= 1) {
+                            catalogoDeBusqueda[encontrado[(menuOpcion - 1)].id].stock = catalogoDeBusqueda[encontrado[(menuOpcion - 1)].id].stock - cantidades;
+                            carritoDeCompras.push({
+                                id: catalogoDeBusqueda[encontrado[(menuOpcion - 1)].id].id,
+                                tipo: catalogoDeBusqueda[encontrado[(menuOpcion - 1)].id].tipo,
+                                cantidad: cantidades,
+                                nombre: catalogoDeBusqueda[encontrado[(menuOpcion - 1)].id].nombre,
+                                subtotal: (cantidades * catalogoDeBusqueda[encontrado[(menuOpcion - 1)].id].precio)
+                            });
+                            if (cantidades == 1) {
+                                alert(catalogoDeBusqueda[encontrado[(menuOpcion - 1)].id].nombre + " ha sido añadido al carrito.");
+                                MENUBUSQUEDA();
+                            } else {
+                                alert(cantidades + "x " + catalogoDeBusqueda[encontrado[(menuOpcion - 1)].id].nombre + " han sido añadidos al carrito.");
+                                MENUBUSQUEDA();
+                            }
+                        } else {
+                            alert("Atención: Debes escribir un numero entero mayor a 1.");
+                            MENUBUSQUEDA();
+                        }
+                    } else {
+                        alert("Atención: Stock insuficiente para cumplir la demanda, puedes pedir " + catalogoDeBusqueda[encontrado[(menuOpcion - 1)].id].stock + " unidades o menos.");
+                        MENUBUSQUEDA();
+                    }
+                } else {
+                    alert("Al parecer nos hemos quedado sin stock, por favor intenta mas tarde.");
+                    MENUBUSQUEDA();
+                }
+
+            } else if (menuOpcion == 0) {
+                MENUBUSQUEDA();
+            } else {
+                alert("Entrada incorrecta, Volviendo al menú anterior...")
+                MENUBUSQUEDA();
             }
         }
-        listaDeBusqueda((encontrado) => {
-            conteo.push(numeracion + "- Tipo: " + encontrado.tipo + ", Nombre: " + encontrado.nombre + ", Precio: $" + encontrado.precio + "-.");
-        }, encontrado);
-        alert("Hemos encontrado:\n" + conteo.join("\n"));
-        MENUPRINCIPAL();
     }
 }
 
