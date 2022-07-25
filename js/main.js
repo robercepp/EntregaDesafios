@@ -127,15 +127,12 @@ function MENUBUSQUEDA() {
             }
         }
         listaDeBusqueda((encontrado) => {
-            conteo.push(numeracion + "- Tipo: " + encontrado.tipo + ", Nombre: " + encontrado.nombre + ", Precio: $" + encontrado.precio+"-.");
+            conteo.push(numeracion + "- Tipo: " + encontrado.tipo + ", Nombre: " + encontrado.nombre + ", Precio: $" + encontrado.precio + "-.");
         }, encontrado);
         alert("Hemos encontrado:\n" + conteo.join("\n"));
         MENUPRINCIPAL();
     }
 }
-
-
-
 
 function MENULIBRETAS() {
     let menuOpcion = parseInt(prompt("---Anabella Avena - Ilustradora Freelance---\n---Menú de libretas---\nPor favor elija una opción para agregar al carrito:\n1-Libreta de Chicas Gamer - Precio: $12.50- - Unidades disponibles: " + libretaChicasGamer.stock + "\n2-Libreta Six Fanarts - Precio: $10.50- - Unidades disponibles: " + libretaSixFanarts.stock + "\n3-Libreta Lulu Martins - Precio: $11.0- - Unidades disponibles: " + libretaLuluMartins.stock + "\n4-Libreta Christine Hug - Precio: $12.0- - Unidades disponibles: " + libretaChristineHug.stock + "\n5-Volver al menú anterior.\n \nNota: Los precios no incluyen i.v.a."));
@@ -220,7 +217,7 @@ function MENUCARRITO() {
     if (menuOpcion >= 1 && menuOpcion <= 4) {
         switch (menuOpcion) {
             case 1:
-                if(cantidadProductos > 0) {
+                if (cantidadProductos > 0) {
                     pago = prompt("---Carrito de Compras---\nLa suma Total a pagar es de: $ " + precioConIva.toFixed(2) + "\nPor favor ingrese el monto especificado arriba para acreditar pago...");
                     if (pago == precioConIva.toFixed(2)) {
                         alert("---Carrito de Compras---\nEl pago de: $" + precioConIva.toFixed(2) + " se ha acreditado correctamente.")
@@ -299,7 +296,7 @@ function VOLVERALMENU() {
 }
 
 function CIERREDECOMPRA() {
-    const listadoCarrito = carritoDeCompras.map((carritoDeCompras) => "-" + carritoDeCompras.cantidad + "x " + carritoDeCompras.nombre + "\nSubtotal: $" + carritoDeCompras.subtotal+"\n");
+    const listadoCarrito = carritoDeCompras.map((carritoDeCompras) => "-" + carritoDeCompras.cantidad + "x " + carritoDeCompras.nombre + "\nSubtotal: $" + carritoDeCompras.subtotal + "\n");
     const precioSinIva = carritoDeCompras.reduce((acumulador, carritoDeCompras) => {
         return acumulador + carritoDeCompras.subtotal;
     }, 0);
