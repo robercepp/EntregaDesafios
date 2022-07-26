@@ -77,6 +77,7 @@ nombre = prompt("Ingrese su nombre de pila (su apellido se lo preguntaremos lueg
 apellido = prompt("Ingrese su apellido.");
 
 MENUPRINCIPAL();
+
 function MENUPRINCIPAL() {
     let menuOpcion = parseInt(prompt("--- Simulador eCommerce --- \n--- Anabella Avena - Ilustradora Freelance ---\nBienvenido/a al simulador de tienda, aquí podrás ver mi catálogo de items en venta.\nPor favor elige una opción:\n1-Buscar Item\n2-Libretas\n3-Stickers\n4-Posters\n5-Ir al carrito de compras\n6-Salir "));
     if (menuOpcion >= 1 && menuOpcion <= 6) {
@@ -86,15 +87,15 @@ function MENUPRINCIPAL() {
                 break;
             case 2:
                 alert("Ha entrado en el menú libretas...");
-                MENU ("Libreta", "libretas");
+                MENU("Libreta", "libretas");
                 break;
             case 3:
                 alert("Ha entrado en el menú Stikers");
-                MENU ("Sticker", "stickers");
+                MENU("Sticker", "stickers");
                 break;
             case 4:
                 alert("Ha entrado en el menú Posters");
-                MENU ("Poster", "posters");
+                MENU("Poster", "posters");
                 break;
             case 5:
                 alert("Accediendo al Carrito de Compras");
@@ -129,7 +130,7 @@ function MENUBUSQUEDA() {
                 }
             }
             listaDeBusqueda((encontrado) => {
-                conteo.push(numeracion + "- Tipo: " + encontrado.tipo + ", Nombre: " + encontrado.nombre + ", Precio: $" + encontrado.precio + " Stock: " + encontrado.stock+".");
+                conteo.push(numeracion + "- Tipo: " + encontrado.tipo + ", Nombre: " + encontrado.nombre + ", Precio: $" + encontrado.precio + " Stock: " + encontrado.stock + ".");
             }, encontrado);
             let menuOpcion = parseInt(prompt("Hemos encontrado:\n" + conteo.join("\n") + "\nSeleccione el ítem que desee agregar al carrito: \n0- Volver al menú de Busqueda."));
             if (menuOpcion > 0 && menuOpcion <= conteo.length) {
@@ -174,7 +175,7 @@ function MENUBUSQUEDA() {
     }
 }
 
-function MENU (tipo, tipoPlural) {
+function MENU(tipo, tipoPlural) {
     const conteo = [];
     const lista = catalogoDeBusqueda.filter(producto => producto.tipo == tipo);
     let numeracion = 0;
@@ -187,7 +188,7 @@ function MENU (tipo, tipoPlural) {
     enumerador((lista) => {
         conteo.push(numeracion + "- " + lista.nombre + ",\n Precio: $" + lista.precio + ", Stock: " + lista.stock + ".");
     }, lista);
-    let menuOpcion = parseInt(prompt("---Anabella Avena - Ilustradora Freelance---\n---Menú de "+tipoPlural+"---\nPor favor elija una opción para agregar al carrito:\n" + conteo.join("\n") + "\n0- Volver al menú anterior.\n \nNota: Los precios no incluyen i.v.a."));
+    let menuOpcion = parseInt(prompt("---Anabella Avena - Ilustradora Freelance---\n---Menú de " + tipoPlural + "---\nPor favor elija una opción para agregar al carrito:\n" + conteo.join("\n") + "\n0- Volver al menú anterior.\n \nNota: Los precios no incluyen i.v.a."));
     if (menuOpcion > 0 && menuOpcion <= conteo.length) {
         if (catalogoDeBusqueda[lista[(menuOpcion - 1)].id].stock > 0) {
             let cantidades = parseInt(prompt("Cuantos/as " + lista[(menuOpcion - 1)].nombre + " desea agregar al carrito?"));
@@ -274,6 +275,7 @@ function MENUCARRITO() {
                 VOLVERALMENU();
                 break;
             case 4:
+                carritoDeCompras = [];
                 EXITPROGRAM();
                 break;
         }
@@ -335,9 +337,22 @@ function CIERREDECOMPRA() {
     const dia = fechaDeCompra.toLocaleDateString();
     const hora = fechaDeCompra.toLocaleTimeString();
     alert("Su boleta de compra:\nFactura tipo C consumidor final\nAnabella Avena n°0001-000001\nFecha de compra: " + dia + "\nhora: " + hora + "\nNombre: " + nombre + "\nApellido: " + apellido + "\nItems comprados:\n" + listadoCarrito + "\nTotal monto: $" + (precioConIva.toFixed(2) + "-.\nMuchas gracias por su compra!"));
+    carritoDeCompras = [];
     EXITPROGRAM();
 }
 
 function EXITPROGRAM() {
-    return alert("Está saliendo de la tienda, esperamos volver a verlo pronto.");
+    if (carritoDeCompras.length > 0) {
+        let menuOpcion = parseInt(prompt("Al parecer ha dejado cargado el carrito de compras.\nDesea revisarlo antes de salir?\n1- Si.\n2- No."));
+        if (menuOpcion == 1) {
+            MENUCARRITO();
+        } else if (menuOpcion) {
+            return alert("Está saliendo de la tienda, esperamos volver a verlo pronto.");
+        } else {
+            Alert("Entrada inválida, debe ingresar una opción valida.\nVolvamos a intentarlo.");
+            EXITPROGRAM();
+        }
+    } else {
+        return alert("Está saliendo de la tienda, esperamos volver a verlo pronto.");
+    }
 }
