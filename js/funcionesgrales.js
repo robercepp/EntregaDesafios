@@ -12,7 +12,15 @@ function logged() {
         bienvenido.innerHTML = `<p class="bienvenida">Bienvenido/a, usuario sin registrar</p> <a class="bienvenida subrayado" id="login" href="">iniciar sesión</a> <a class="bienvenida subrayado" id="crearcuenta" href="">crear una cuenta</a>
         `;
         localStorage.removeItem("usuarioLogueado")
-        alerta.innerHTML = usuarioLogueado[0].nombre + " ha salido de su cuenta."
+        Toastify({
+            text: usuarioLogueado[0].nombre + " ha salido de su cuenta.",
+            duration: 3000,
+            gravity: "bottom",
+            position: "right",
+            style: {
+                background: "hsl(45, 100%, 70%)",
+            }
+        }).showToast();
         usuarioLogueado = [];
         carritoDeCompras = [];
         MENUPRINCIPAL();
@@ -58,4 +66,29 @@ function sincronizarIdCounter() {
 function sincronizarCarrito() {
     localStorage["carritoDeComprasId" + usuarioLogueado[0].id] = JSON.stringify(carritoDeCompras);
     carritoDeCompras = JSON.parse(localStorage["carritoDeComprasId" + usuarioLogueado[0].id]);
+}
+
+//Destructuring
+const nombre = ({
+    nombre
+}) => {
+    return nombre
+}
+
+const apellido = ({
+    apellido
+}) => {
+    return apellido
+}
+
+const email = ({
+    email
+}) => {
+    return email
+}
+
+const id = ({
+    id
+}) => {
+    return id
 }

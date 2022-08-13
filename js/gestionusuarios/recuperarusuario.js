@@ -16,10 +16,10 @@ function RECUPERARUSUARIO() {
     </form>
     <button id="salida">volver</button>
     `
+
     const volver = document.getElementById("salida");
     volver.addEventListener("mouseup", (e) => {
         e.preventDefault();
-        alerta.innerHTML = "";
         LOGIN();
     });
     const paso1 = document.getElementById("formulario");
@@ -27,13 +27,40 @@ function RECUPERARUSUARIO() {
         e.preventDefault();
         const chequearUsuario = obj => obj.nombreDeUsuario === e.target[0].value;
         if (usuarios.some(chequearUsuario) === false) {
-            alerta.innerHTML = "No se encuentra al usuario"
+            Toastify({
+                text: "No se encuentra al usuario.",
+                duration: 3000,
+                gravity: "bottom",
+                position: "right",
+                style: {
+                    background: "hsl(45, 100%, 70%)",
+                }
+            }).showToast();
         } else {
             const encontrado = usuarios.find((user) => {
                 return user.nombreDeUsuario === e.target[0].value;
             });
+            //algo de destructuring
+            const {
+                nombreDeUsuario
+            } = encontrado;
+            const {
+                pregunta
+            } = encontrado;
+            const {
+                edad
+            } = encontrado;
+            const {
+                email
+            } = encontrado;
+            const {
+                respuesta
+            } = encontrado;
+            const {
+                contrasena
+            } = encontrado;
             contenido.innerHTML = `
-                <p class="elements">Su cuenta '${encontrado.nombreDeUsuario}' ha sido detectada</p>
+                <p class="elements">Su cuenta '${nombreDeUsuario}' ha sido detectada</p>
                 <form id="formulario2" class="menu-intro">
                 <p class="pista">paso 2</p>
                 <div class="elements">
@@ -51,26 +78,41 @@ function RECUPERARUSUARIO() {
                 </form>
                 <button id="salida">volver</button>
                 `
-                const volver = document.getElementById("salida");
-                    volver.addEventListener("mouseup", (e) => {
-                        e.preventDefault();
-                        alerta.innerHTML = "";
-                        RECUPERARUSUARIO();
-                    });
+            const volver = document.getElementById("salida");
+            volver.addEventListener("mouseup", (e) => {
+                e.preventDefault();
+                RECUPERARUSUARIO();
+            });
             const paso2 = document.getElementById("formulario2");
             paso2.addEventListener("submit", (e) => {
                 e.preventDefault();
-                if (encontrado.email !== e.target[0].value) {
-                    alerta.innerHTML = "el email no coincide con el registrado en nuestra base de datos";
-                } else if (encontrado.edad !== parseInt(e.target[1].value)) {
-                    alerta.innerHTML = "alerta: la edad ingresada no es la correcta";
+                if (email !== e.target[0].value) {
+                    Toastify({
+                        text: "el email no coincide con el registrado en nuestra base de datos.",
+                        duration: 3000,
+                        gravity: "bottom",
+                        position: "right",
+                        style: {
+                            background: "hsl(45, 100%, 70%)",
+                        }
+                    }).showToast();
+                } else if (edad !== parseInt(e.target[1].value)) {
+                    Toastify({
+                        text: "alerta: la edad ingresada no es la correcta.",
+                        duration: 3000,
+                        gravity: "bottom",
+                        position: "right",
+                        style: {
+                            background: "hsl(45, 100%, 70%)",
+                        }
+                    }).showToast();
                 } else {
                     contenido.innerHTML = `
                     <p class="elements">Una última pregunta. agradecemos su paciencia.</p>
                     <form id="formulario3" class="menu-intro">
                     <p class="pista">paso 3</p>
                     <div class="elements">
-                    <p class="pista">${encontrado.pregunta}</p>
+                    <p class="pista">${pregunta}</p>
                     <input id="pregunta" class="inputs" placeholder="su respuesta aquí" type="text">
                     </div>
                     <div class="button-container">
@@ -83,26 +125,34 @@ function RECUPERARUSUARIO() {
                     const volver = document.getElementById("salida");
                     volver.addEventListener("mouseup", (e) => {
                         e.preventDefault();
-                        alerta.innerHTML = "";
                         RECUPERARUSUARIO();
                     });
                     const paso3 = document.getElementById("formulario3");
                     paso3.addEventListener("submit", (e) => {
                         e.preventDefault();
-                        if (encontrado.respuesta !== e.target[0].value) {
-                            alerta.innerHTML = "alerta: su respuesta no es correcta";
+                        if (respuesta !== e.target[0].value) {
+                            Toastify({
+                                text: "alerta: su respuesta no es correcta.",
+                                duration: 3000,
+                                gravity: "bottom",
+                                position: "right",
+                                style: {
+                                    background: "hsl(45, 100%, 70%)",
+                                }
+                            }).showToast();
                         } else {
-                            contenido.innerHTML = `
-                                        <p class="elements">Su contraseña es: "${encontrado.contrasena}"</p>
-                                        <p class="elements">gracias por su paciencia.</p>
-                                        <button id="salida">volver</button>
-                                        `
-                            const volver = document.getElementById("salida");
-                            volver.addEventListener("mouseup", (e) => {
-                                e.preventDefault();
-                                alerta.innerHTML = "";
-                                RECUPERARUSUARIO();
+                            contenido.innerHTML = ""
+                            Swal.fire({
+                                title: "Su identidad ha sido verificada.",
+                                text: "Su contraseña es: '" + contrasena + "'",
+                                icon: "success",
+                                confirmButtonText: "entendido",
+                                background: "#fff",
+                                backdrop: "rgba(0,0,123,0.4)",
+                                color: "hsl(221, 56%, 31%)",
+                                confirmButtonColor: "hsl(45, 100%, 82%)",
                             });
+                            LOGIN();
                         }
                     })
                 }

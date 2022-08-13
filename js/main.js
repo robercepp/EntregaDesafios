@@ -5,8 +5,6 @@
 //inserción de contenido en sitio web
 let titulo = document.createElement("h4");
 document.getElementsByClassName("titulo-relativo")[0].appendChild(titulo);
-let alerta = document.createElement("p");
-document.getElementsByClassName("alertas")[0].append(alerta);
 let bienvenido = document.createElement("p");
 document.getElementsByClassName("bienvenido")[0].appendChild(bienvenido);
 const tr = document.createElement("tr");
@@ -17,23 +15,11 @@ cabecera.id = "cabecera"
 const salida = document.createElement("div");
 
 //condicioes antes de iniciar el sitio
-if (localStorage.catalogo) {
-    catalogoDeBusqueda = JSON.parse(localStorage.catalogo);
-}
-
-if (localStorage.usuarioLogueado) {
-    logged();
-} else {
-    unlogged();
-}
-
-if (localStorage.usuarios) {
-    usuarios = JSON.parse(localStorage.usuarios)
-}
-
-if (localStorage.idCounter) {
-    idcounter = parseInt(localStorage.idCounter)
-}
+//algunos operadores ternarios
+localStorage.catalogo ? catalogoDeBusqueda = JSON.parse(localStorage.catalogo) : null
+localStorage.usuarioLogueado ? logged() : unlogged()
+localStorage.usuarios ? usuarios = JSON.parse(localStorage.usuarios) : null
+localStorage.idCounter ? idcounter = parseInt(localStorage.idCounter) : null
 
 //A partir de aquí comienza el menú...
 MENUPRINCIPAL();

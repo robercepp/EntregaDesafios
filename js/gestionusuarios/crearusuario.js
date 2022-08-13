@@ -40,7 +40,6 @@ function CREARUSUARIO() {
     const volver = document.getElementById("salida");
     volver.addEventListener("mouseup", (e) => {
         e.preventDefault();
-        alerta.innerHTML = "";
         LOGIN();
     });
     const agregarUsuario = document.getElementById("formulario");
@@ -56,42 +55,122 @@ function CREARUSUARIO() {
         }
 
         if (e.target[0].value === "") {
-            alerta.innerHTML = "debes escribir un nombre de usuario";
+            Toastify({
+                text: "debes escribir un nombre de usuario",
+                duration: 3000,
+                gravity: "bottom",
+                position: "right",
+                style: {
+                    background: "hsl(45, 100%, 70%)",
+                }
+            }).showToast();
             document.querySelector("#nombre-usuario").classList.toggle("red-border");
         } else if (usuarios.some(chequearUsuario) === true || usuarios == []) {
-            alerta.innerHTML = "Lo sentimos, el nombre de usuario ya está ocupado, por favor elija otro.";
+            Toastify({
+                text: "Lo sentimos, el nombre de usuario ya está ocupado, por favor elija otro.",
+                duration: 3000,
+                gravity: "bottom",
+                position: "right",
+                style: {
+                    background: "hsl(45, 100%, 70%)",
+                }
+            }).showToast();
             document.querySelector("#nombre-usuario").classList.toggle("red-border")
         } else if (e.target[1].value === "") {
-            alerta.innerHTML = "debes escribir tu nombre";
+            Toastify({
+                text: "Debes escribir tu nombre.",
+                duration: 3000,
+                gravity: "bottom",
+                position: "right",
+                style: {
+                    background: "hsl(45, 100%, 70%)",
+                }
+            }).showToast();
             document.querySelector("#nombre").classList.toggle("red-border");
         } else if (e.target[2].value === "") {
-            alerta.innerHTML = "debes escribir un apellido";
+            Toastify({
+                text: "Debes escribir tu apellido.",
+                duration: 3000,
+                gravity: "bottom",
+                position: "right",
+                style: {
+                    background: "hsl(45, 100%, 70%)",
+                }
+            }).showToast();
             document.querySelector("#apellido").classList.toggle("red-border");
         } else if (e.target[3].value === "") {
-            alerta.innerHTML = "debes escribir tu fecha de nacimiento";
+            Toastify({
+                text: "Debes escribir tu fecha de nacimiento.",
+                duration: 3000,
+                gravity: "bottom",
+                position: "right",
+                style: {
+                    background: "hsl(45, 100%, 70%)",
+                }
+            }).showToast();
             document.querySelector("#fecha-nac").classList.toggle("red-border");
         } else if (e.target[4].value === "" || e.target[5].value === "") {
-            alerta.innerHTML = "cuidado, debes escribir una email válido.";
+            Toastify({
+                text: "Cuidado, Debes escribir un email válido.",
+                duration: 3000,
+                gravity: "bottom",
+                position: "right",
+                style: {
+                    background: "hsl(45, 100%, 70%)",
+                }
+            }).showToast();
             document.querySelector("#email-1").classList.toggle("red-border");
             document.querySelector("#email-2").classList.toggle("red-border");
         } else if (e.target[4].value !== e.target[5].value) {
-            alerta.innerHTML = "los e-mails escritos no coinciden. por favor intente nuevamente.";
+            Toastify({
+                text: "los e-mails escritos no coinciden. por favor intente nuevamente.",
+                duration: 3000,
+                gravity: "bottom",
+                position: "right",
+                style: {
+                    background: "hsl(45, 100%, 70%)",
+                }
+            }).showToast();
             document.querySelector("#email-1").classList.toggle("red-border");
             document.querySelector("#email-2").classList.toggle("red-border");
         } else if (e.target[6].value === "" || e.target[7].value === "") {
-            alerta.innerHTML = "cuidado, debes escribir una contraseña ";
+            Toastify({
+                text: "cuidado, debes escribir una contraseña.",
+                duration: 3000,
+                gravity: "bottom",
+                position: "right",
+                style: {
+                    background: "hsl(45, 100%, 70%)",
+                }
+            }).showToast();
             document.querySelector("#contraseña-1").classList.toggle("red-border");
             document.querySelector("#contraseña-2").classList.toggle("red-border");
         } else if (e.target[6].value !== e.target[7].value) {
-            alerta.innerHTML = "las contraseñas no coinciden, intentelo nuevamente.";
+            Toastify({
+                text: "las contraseñas no coinciden, intentelo nuevamente.",
+                duration: 3000,
+                gravity: "bottom",
+                position: "right",
+                style: {
+                    background: "hsl(45, 100%, 70%)",
+                }
+            }).showToast();
             document.querySelector("#contraseña-1").classList.toggle("red-border");
             document.querySelector("#contraseña-2").classList.toggle("red-border");
         } else if (e.target[8].value === "" || e.target[9].value === "") {
-            alerta.innerHTML = "cuidado, debes escribir una pregunta y una respuesta de seguridad.";
+            Toastify({
+                text: "cuidado, debes escribir una pregunta y una respuesta de seguridad.",
+                duration: 3000,
+                gravity: "bottom",
+                position: "right",
+                style: {
+                    background: "hsl(45, 100%, 70%)",
+                }
+            }).showToast();
             document.querySelector("#pregunta").classList.toggle("red-border");
             document.querySelector("#respuesta").classList.toggle("red-border");
         } else {
-            idcounter = idcounter + 1
+            idcounter++;
             sincronizarIdCounter();
             const newUser = new Usuario(idcounter, e.target[0].value, e.target[1].value, e.target[2].value, calcularEdad(años), e.target[4].value, e.target[6].value, e.target[8].value, e.target[9].value);
             usuarios.push(newUser)
@@ -99,7 +178,17 @@ function CREARUSUARIO() {
             document.querySelectorAll('#formulario input').forEach((input) => {
                 input.value = '';
             });
-            alerta.innerHTML = "Usuario creado satisfactoriamente";
+            Swal.fire({
+                title: "Exito!",
+                text: "Usuario creado satisfactoriamente",
+                icon: "success",
+                confirmButtonText: "entendido",
+                background: "#fff",
+                backdrop: "rgba(0,0,123,0.4)",
+                color: "hsl(221, 56%, 31%)",
+                confirmButtonColor: "hsl(45, 100%, 82%)",
+            });
+            MENUPRINCIPAL();
         }
     });
 }

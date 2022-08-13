@@ -10,14 +10,7 @@ function MENUCARRITO() {
     document.getElementsByClassName("contenido")[0].appendChild(cabecera);
     cabecera.innerHTML = `
                 <p>Repasemos lo que has cargado en el carrito antes de confirmar...</p>
-                <div class=resultado-cabecera> 
-                <div class="td-tipo">tipo</div>
-                    <div class="td-nombre">nombre</div>
-                    <div class="td-precio">precio unitario</div>
-                    <div class="td-cantidad">cantidad</div>
-                    <div class="td-subtotal">subtotal</div>
-                    <div class="td-quitar">quitar</div>
-                    </div>
+                <div class="resultado-container"></div>
                 `
     const listaDeBusqueda = (funcion, encontrado) => {
         for (const item of encontrado) {
@@ -26,21 +19,43 @@ function MENUCARRITO() {
         }
     }
     listaDeBusqueda((carritoDeCompras) => {
-        const resultado = document.createElement("div");
-        resultado.className = "resultado";
-        resultado.id = "item-" + numeracion;
-        document.getElementsByClassName("contenido")[0].appendChild(resultado);
-        resultado.innerHTML = `
-                    <div class="td-tipo">${carritoDeCompras.tipo}</div>
-                                <div class="td-nombre">${carritoDeCompras.nombre}</div>
-                                <div class="td-precio">$${(carritoDeCompras.precio*iva).toFixed(2)}</div>
-                                <div class="td-cantidad">${carritoDeCompras.cantidad}</div>
-                                <div class="td-subtotal">$${(carritoDeCompras.subtotal*iva).toFixed(2)}</div>
-                                <div class="td-form"> <form id="quitar-${numeracion}">
-                                <input style='width:2em' type="number" min="1">
-                                <button class="boton-contextual">quitar</button>
-                                </form>
-                                `;
+     //algunos destructurings
+     const {
+        imagen
+    } = carritoDeCompras;
+    const {
+        tipo
+    } = carritoDeCompras;
+    const {
+        nombre
+    } = carritoDeCompras;
+    const {
+        precio
+    } = carritoDeCompras;
+    const {
+        cantidad
+    } = carritoDeCompras;
+    const {
+        subtotal
+    } = carritoDeCompras;
+    const tarjeta = document.createElement("div");
+    tarjeta.className = "tarjeta";
+    tarjeta.id = "item-" + numeracion;
+    document.getElementsByClassName("resultado-container")[0].appendChild(tarjeta);
+    tarjeta.innerHTML = `
+    <div class="td-imagen">${imagen}</div>
+    <div class="td-nombre">${nombre}</div>
+    <div class="td-tipo">tipo: ${tipo}</div>
+    <div class="td-stock">cantidad: ${cantidad}</div>
+    <div class="td-precio">precio unitario: $${parseFloat(precio*iva).toFixed(2)}*</div>
+    <div class="td-precio">subtotal: $${parseFloat(subtotal*iva).toFixed(2)}</div>
+    <div class="td-precio">*los precios incluyen i.v.a.</div>
+    <div class="td-form-container"> <form class="td-form" id="quitar-${numeracion}">
+    <input style='width:3em' type="number" min="1">
+    <button class="boton-contextual">quitar</button>
+    </form>
+    </div>
+    `;
         eliminar(numeracion);
     }, carritoDeCompras);
 
@@ -53,20 +68,48 @@ function MENUCARRITO() {
                 carritoDeCompras[(numero - 1)].cantidad = carritoDeCompras[(numero - 1)].cantidad - cantidades;
                 carritoDeCompras[(numero - 1)].subtotal = carritoDeCompras[(numero - 1)].subtotal - (carritoDeCompras[(numero - 1)].precio * cantidades);
                 catalogoDeBusqueda[carritoDeCompras[(numero - 1)].id].stock = catalogoDeBusqueda[carritoDeCompras[(numero - 1)].id].stock + cantidades;
-                alerta.innerHTML = cantidades + "x " + carritoDeCompras[(numero - 1)].nombre + " ha sido eliminado del carrito de compras.";
+                Toastify({
+                    text: cantidades + "x " + carritoDeCompras[(numero - 1)].nombre + " ha sido eliminado del carrito de compras.",
+                    duration: 3000,
+                    gravity: "bottom",
+                    position: "right",
+                    style: {
+                        background: "hsl(45, 100%, 70%)",
+                    }
+                }).showToast();
                 sincronizarCarrito();
                 sincronizarCatalogo();
-                if (carritoDeCompras[(numero - 1)].cantidad === 0) {
+                console.log(carritoDeCompras.length)
+                if (carritoDeCompras[(numero - 1)].cantidad < 1) {
                     const borrar = document.querySelector("#item-" + numero);
                     borrar.remove();
                     let borrado = carritoDeCompras.splice(numero - 1, 1);
-                    localStorage.removeItem("carritoDeComprasId" + usuarioLogueado[0].id)
+                    sincronizarCarrito();
+                    if (carritoDeCompras.length == 0) {
+                        localStorage.removeItem("carritoDeComprasId" + usuarioLogueado[0].id)
+                    } 
                 }
                 MENUCARRITO();
             } else if (e.target[0].value === "") {
-                alerta.innerHTML = "debes ingresar una cantidad para quitar";
+                Toastify({
+                    text: "debes ingresar una cantidad para quitar.",
+                    duration: 3000,
+                    gravity: "bottom",
+                    position: "right",
+                    style: {
+                        background: "hsl(45, 100%, 70%)",
+                    }
+                }).showToast();
             } else {
-                alerta.innerHTML = "cuidado, no puedes quitar mas items de los que has agregado";
+                Toastify({
+                    text: "cuidado, no puedes quitar mas items de los que has agregado.",
+                    duration: 3000,
+                    gravity: "bottom",
+                    position: "right",
+                    style: {
+                        background: "hsl(45, 100%, 70%)",
+                    }
+                }).showToast();
             }
         });
     }
@@ -82,22 +125,27 @@ function MENUCARRITO() {
     const volver = document.getElementById("salida");
     volver.addEventListener("mouseup", (e) => {
         e.preventDefault();
-        alerta.innerHTML = "";
         MENUPRINCIPAL();
     });
     const cancelar = document.getElementById("cancelar");
     cancelar.addEventListener("mouseup", (e) => {
         e.preventDefault();
-        alerta.innerHTML = "";
         EXITPROGRAM();
     });
     const pagar = document.getElementById("pagar");
     pagar.addEventListener("mouseup", (e) => {
         e.preventDefault();
         if (carritoDeCompras.length < 1) {
-            alerta.innerHTML = "Lo sentimos. no puedes continuar si no has cargado ningun ítem en el carrito"
+            Toastify({
+                text: "Lo sentimos. no puedes continuar si no has cargado ningun ítem en el carrito.",
+                duration: 3000,
+                gravity: "bottom",
+                position: "right",
+                style: {
+                    background: "hsl(45, 100%, 70%)",
+                }
+            }).showToast();
         } else {
-            alerta.innerHTML = "";
             contenido.innerHTML = "";
 
             titulo.innerHTML = "---Carrito de Compras---";
@@ -126,15 +174,42 @@ function MENUCARRITO() {
                     input.value = "";
                 });
                 if (pago == precioConIva.toFixed(2)) {
-                    alerta.innerHTML = "El pago de: $" + precioConIva.toFixed(2) + " se ha acreditado correctamente.";
+                    Swal.fire({
+                        title: "Operación exitosa",
+                        text: "El pago de: $" + precioConIva.toFixed(2) + " se ha acreditado correctamente.",
+                        icon: "success",
+                        confirmButtonText: "entendido",
+                        background: "#fff",
+                        backdrop: "rgba(0,0,123,0.4)",
+                        color: "hsl(221, 56%, 31%)",
+                        confirmButtonColor: "hsl(45, 100%, 82%)",
+                    });
                     ENTREGABOLETA();
                 } else if (pago > precioConIva) {
                     let vuelto = pago - precioConIva.toFixed(2);
-                    alerta.innerHTML = "Al parecer nos has enviado mas dinero del que era necesario, por ello te reenviamos $" + vuelto.toFixed(2) + " como vuelto por tu compra.";
+                    Swal.fire({
+                        title: "Operación exitosa",
+                        text: "Al parecer nos has enviado mas dinero del que era necesario, por ello te reenviamos $" + vuelto.toFixed(2) + " como vuelto por tu compra.",
+                        icon: "success",
+                        confirmButtonText: "entendido",
+                        background: "#fff",
+                        backdrop: "rgba(0,0,123,0.4)",
+                        color: "hsl(221, 56%, 31%)",
+                        confirmButtonColor: "hsl(45, 100%, 82%)",
+                    });
                     ENTREGABOLETA();
                 } else if (pago < precioConIva && pago > 0) {
                     let pagoInsuficiente = precioConIva.toFixed(2) - pago;
-                    alerta.innerHTML = "Vaya!, al parecer has pagado $" + pago + ". Lamentablemente te faltan $" + pagoInsuficiente.toFixed(2) + " para completar los $" + precioConIva.toFixed(2) + " que se necesitan.</ br>Te devolvemos el dinero, Volvamos a completar la transacción.";
+                    Swal.fire({
+                        title: "Lo sentimos",
+                        text: "Al parecer has pagado $" + pago + ". Lamentablemente te faltan $" + pagoInsuficiente.toFixed(2) + " para completar los $" + precioConIva.toFixed(2) + " que se necesitan. Te devolvemos el dinero, Volvamos a completar la transacción.",
+                        icon: "error",
+                        confirmButtonText: "entendido",
+                        background: "#fff",
+                        backdrop: "rgba(0,0,123,0.4)",
+                        color: "hsl(221, 56%, 31%)",
+                        confirmButtonColor: "hsl(45, 100%, 82%)",
+                    });
                 }
             });
         }

@@ -19,9 +19,25 @@ function EXITPROGRAM() {
             usuarioLogueado = [];
             carritoDeCompras = [];
             unlogged();
-            contenido.innerHTML = "Ha salido de la tienda, esperamos volver a verlo pronto.";
+            Toastify({
+                text: "Ha salido de la tienda, esperamos volver a verlo pronto.",
+                duration: 3000,
+                gravity: "bottom",
+                position: "right",
+                style: {
+                    background: "hsl(45, 100%, 70%)",
+                }
+            }).showToast();
         });
     } else {
-        contenido.innerHTML = "Ha salido de la tienda, esperamos volver a verlo pronto.";
+        Toastify({
+            text: "Ha salido de la tienda, esperamos volver a verlo pronto.",
+            duration: 3000,
+            gravity: "bottom",
+            position: "right",
+            style: {
+                background: "hsl(45, 100%, 70%)",
+            }
+        }).showToast();
     }
 }
