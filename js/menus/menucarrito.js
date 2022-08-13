@@ -19,30 +19,30 @@ function MENUCARRITO() {
         }
     }
     listaDeBusqueda((carritoDeCompras) => {
-     //algunos destructurings
-     const {
-        imagen
-    } = carritoDeCompras;
-    const {
-        tipo
-    } = carritoDeCompras;
-    const {
-        nombre
-    } = carritoDeCompras;
-    const {
-        precio
-    } = carritoDeCompras;
-    const {
-        cantidad
-    } = carritoDeCompras;
-    const {
-        subtotal
-    } = carritoDeCompras;
-    const tarjeta = document.createElement("div");
-    tarjeta.className = "tarjeta";
-    tarjeta.id = "item-" + numeracion;
-    document.getElementsByClassName("resultado-container")[0].appendChild(tarjeta);
-    tarjeta.innerHTML = `
+        //algunos destructurings
+        const {
+            imagen
+        } = carritoDeCompras;
+        const {
+            tipo
+        } = carritoDeCompras;
+        const {
+            nombre
+        } = carritoDeCompras;
+        const {
+            precio
+        } = carritoDeCompras;
+        const {
+            cantidad
+        } = carritoDeCompras;
+        const {
+            subtotal
+        } = carritoDeCompras;
+        const tarjeta = document.createElement("div");
+        tarjeta.className = "tarjeta";
+        tarjeta.id = "item-" + numeracion;
+        document.getElementsByClassName("resultado-container")[0].appendChild(tarjeta);
+        tarjeta.innerHTML = `
     <div class="td-imagen">${imagen}</div>
     <div class="td-nombre">${nombre}</div>
     <div class="td-tipo">tipo: ${tipo}</div>
@@ -87,7 +87,7 @@ function MENUCARRITO() {
                     sincronizarCarrito();
                     if (carritoDeCompras.length == 0) {
                         localStorage.removeItem("carritoDeComprasId" + usuarioLogueado[0].id)
-                    } 
+                    }
                 }
                 MENUCARRITO();
             } else if (e.target[0].value === "") {

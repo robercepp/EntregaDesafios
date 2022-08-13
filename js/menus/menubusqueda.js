@@ -106,6 +106,7 @@ function MENUBUSQUEDA() {
                     e.preventDefault();
                     MENUBUSQUEDA();
                 });
+
                 function gestorCarrito(numero) {
                     const agregar = document.querySelector("#agregado-" + numero);
                     agregar.addEventListener("submit", (e) => {
@@ -162,7 +163,7 @@ function MENUBUSQUEDA() {
                                 cantidad: cantidades,
                                 nombre: catalogoDeBusqueda[encontrado[(numero - 1)].id].nombre,
                                 precio: (catalogoDeBusqueda[encontrado[(numero - 1)].id].precio),
-                                subtotal: parseFloat(((catalogoDeBusqueda[encontrado[(numero - 1)].id].precio)*cantidades).toFixed(2)),
+                                subtotal: parseFloat(((catalogoDeBusqueda[encontrado[(numero - 1)].id].precio) * cantidades).toFixed(2)),
                                 imagen: (catalogoDeBusqueda[encontrado[(numero - 1)].id].imagen),
                             });
                             sincronizarCarrito();
