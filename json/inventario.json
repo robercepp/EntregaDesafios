@@ -1,0 +1,97 @@
+[{
+    "id": 0,
+    "tipo": "Libreta",
+    "nombre": "Chicas Gamer",
+    "precio": 12.5,
+    "stock": 10,
+    "imagen": "<img src='imagenes/chicasgamer.webp' alt='chicas gamer'>" 
+},
+{
+    "id": 1,
+    "tipo": "Libreta",
+    "nombre": "Six Fanarts",
+    "precio": 10.5,
+    "stock": 15,
+    "imagen": "<img src='imagenes/sixfanarts.webp' alt='sixfanarts'>" 
+},
+{
+    "id": 2,
+    "tipo": "Libreta",
+    "nombre": "Lulu Martins",
+    "precio": 11.0,
+    "stock": 6,
+    "imagen": "<img src='imagenes/lulumartins.webp' alt='lulumartins'>" 
+},
+{
+    "id": 3,
+    "tipo": "Libreta",
+    "nombre": "Christine Hug",
+    "precio": 12.0,
+    "stock": 8,
+    "imagen": "<img src='imagenes/christinehug.webp' alt='christinehug'>" 
+},
+{
+    "id": 4,
+    "tipo": "Sticker",
+    "nombre": "Sirenas",
+    "precio": 3.50,
+    "stock": 6,
+    "imagen": "<img src='imagenes/sirenas.webp' alt='sirenas'>" 
+},
+{
+    "id": 5,
+    "tipo": "Sticker",
+    "nombre": "Chicas",
+    "precio": 3.0,
+    "stock": 7,
+    "imagen": "<img src='imagenes/chicas.webp' alt='chicas'>" 
+},
+{
+    "id": 6,
+    "tipo": "Sticker",
+    "nombre": "Halloween",
+    "precio": 2.75,
+    "stock": 10,
+    "imagen": "<img src='imagenes/halloween.webp' alt='halloween'>" 
+},
+{
+    "id": 7,
+    "tipo": "Sticker",
+    "nombre": "Animales",
+    "precio": 3.5,
+    "stock": 10,
+    "imagen": "<img src='imagenes/animales.webp' alt='animales'>" 
+},
+{
+    "id": 8,
+    "tipo": "Poster",
+    "nombre": "Una Noche de Verano",
+    "precio": 5.75,
+    "stock": 6,
+    "imagen": "<img src='imagenes/nocheverano.webp' alt='noche de verano'>" 
+},
+{
+    "id": 9,
+    "tipo": "Poster",
+    "nombre": "Amantes Mariposa",
+    "precio": 6.0,
+    "stock": 8,
+    "imagen": "<img src='imagenes/amantesmariposa.webp' alt='amantes mariposa'>" 
+},
+{
+    "id": 10,
+    "tipo": "Poster",
+    "nombre": "San Valentín espacial",
+    "precio": 5.0,
+    "stock": 10,
+    "imagen": "<img src='imagenes/sanvalentin.webp' alt='san valentin espacial'>" 
+},
+{
+    "id": 11,
+    "tipo": "Poster",
+    "nombre": "Gatos",
+    "precio": 5.50,
+    "stock": 7,
+    "imagen": "<img src='imagenes/gatos.webp' alt='gatos'></img>" 
+}
+]

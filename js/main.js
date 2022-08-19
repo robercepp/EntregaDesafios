@@ -2,6 +2,23 @@
 
 //Anabella Avena - Ilustradora Gráfica - módulo eCommerce.
 
+//variables y constantes generales
+let catalogoDeBusqueda = [];
+let carritoDeCompras = [];
+let usuarios = [];
+let usuarioLogueado = [];
+let idcounter = 0;
+let idtotal = idcounter;
+const iva = 1.21;
+
+const llenarCatalogo = async () => {
+  const response = await fetch("./JSON/inventario.json");
+  const data = await response.json()
+  localStorage.catalogo ? catalogoDeBusqueda = JSON.parse(localStorage.catalogo) : catalogoDeBusqueda = data
+  }
+
+llenarCatalogo();
+
 //inserción de contenido en sitio web
 let titulo = document.createElement("h4");
 document.getElementsByClassName("titulo-relativo")[0].appendChild(titulo);
@@ -16,7 +33,6 @@ const salida = document.createElement("div");
 
 //condicioes antes de iniciar el sitio
 //algunos operadores ternarios
-localStorage.catalogo ? catalogoDeBusqueda = JSON.parse(localStorage.catalogo) : null
 localStorage.usuarioLogueado ? logged() : unlogged()
 localStorage.usuarios ? usuarios = JSON.parse(localStorage.usuarios) : null
 localStorage.idCounter ? idcounter = parseInt(localStorage.idCounter) : null
@@ -32,7 +48,7 @@ a continuación agrego un índice de archivos.
 -funcionesgrales.js: un conjunto de funciones auxiliares para el correcto funcionamiento del sitio y manejo de memoria local.
 -cierredecompra.js: confirma la compra de lo cargado en el carrito, emite una factura tras el pago exitoso.
 -exitprogram.js: chequea la existencia de items cargados en el carrito antes de salir, desloguea al usuario activo, cierra el programa.
--classes/classproductos.js: establece las variables de las cuales se crean los productos, tales como tipo, nombre, precio, etc. 
+-json/inventario.json: un inventario de los productos para vender (se simula un servidor al cual se le hace fetch para alimentar las bases de datos correspondientes). 
 -classes/classproductos.js: establece las variables de las cuales se crean los usuarios por ej: un id único de usuario, nombre, e-mail, contraseña, etc. 
 -gestionusuarios/crearusuario.js: motor de creación de usuarios. toma las pautas de la clase y guarda un nuevo usuario en un array. 
 -gestionusuarios/login.js: es el menú de login, a partir de este motor, se puede ingresar a una cuenta previamente creada, crear una nueva o recuperar la contraseña.
