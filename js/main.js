@@ -11,11 +11,12 @@ let idcounter = 0;
 let idtotal = idcounter;
 const iva = 1.21;
 
+//Fetch aquí
 const llenarCatalogo = async () => {
   const response = await fetch("./JSON/inventario.json");
   const data = await response.json()
   localStorage.catalogo ? catalogoDeBusqueda = JSON.parse(localStorage.catalogo) : catalogoDeBusqueda = data
-  }
+}
 
 llenarCatalogo();
 
